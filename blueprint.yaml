@@ -7,6 +7,7 @@ grains:
     spec:
       source:
         store: git
+        path: quali_torque_assignment
       agent:
         name: tempagent01
         namespace: default
