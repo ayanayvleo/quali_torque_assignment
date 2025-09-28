@@ -11,12 +11,11 @@ grains:
       agent:
         name: tempagent01
         namespace: default
+      credentials: aws-s3-deployment
       inputs:
         - bucket_name: "my-torque-test-bucket-12345"
       outputs:
         - bucket_name
         - bucket_arn
       env-vars:
-        - AWS_ACCESS_KEY_ID: "{{ .torque.credentials.aws-s3-deployment.access_key }}"
-        - AWS_SECRET_ACCESS_KEY: "{{ .torque.credentials.aws-s3-deployment.secret_key }}"
         - AWS_DEFAULT_REGION: "us-east-1"
