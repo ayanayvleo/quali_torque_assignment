@@ -8,7 +8,7 @@ grains:
       source:
         path: ./
       inputs:
-        - bucket_name
+        - bucket_name: "my-torque-test-bucket-12345"
       outputs:
         - bucket_name
         - bucket_arn
