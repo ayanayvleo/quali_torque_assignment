@@ -1,0 +1,14 @@
+spec_version: 2
+description: Simple S3 bucket deployment for Quali assignment
+
+grains:
+  s3-bucket:
+    kind: terraform
+    spec:
+      source:
+        path: ./
+      inputs:
+        - bucket_name
+      outputs:
+        - bucket_name
+        - bucket_arn
