@@ -14,8 +14,6 @@ grains:
       credentials: aws-s3-deployment
       inputs:
         - bucket_name: "my-torque-test-bucket-12345"
-        - aws_access_key_id: $torque.credentials.aws-s3-deployment["Access Key"]
-        - aws_secret_access_key: $torque.credentials.aws-s3-deployment["Secret Key"]
       outputs:
         - bucket_name
         - bucket_arn
