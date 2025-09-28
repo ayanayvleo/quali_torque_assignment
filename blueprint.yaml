@@ -1,41 +1,21 @@
-spec_version: 2spec_version: 2
+spec_version: 2
+description: Simple S3 bucket deployment for Quali assignment
 
-description: Simple S3 bucket deployment for Quali assignmentdescription: Simple S3 bucket deployment for Quali assignment
-
-
-
-grains:grains:
-
-  quali_torque_assignment:  quali_torque_assignment:
-
-    kind: terraform    kind: terraform
-
-    spec:    spec:
-
-      source:      source:
-
-        path: .        path: .
-
-      agent:      agent:
-
-        name: torqueagent01        name: torqueagent01
-
-        namespace: default        namespace: default
-
-      inputs:      inputs:
-
-        - bucket_name: "my-torque-test-bucket-12345"        - bucket_name: "my-torque-test-bucket-12345"
-
-      outputs:      outputs:
-
-        - bucket_name        - bucket_name
-
-        - bucket_arn        - bucket_arn
-
-      env-vars:      env-vars:
-
-        - AWS_ACCESS_KEY_ID: $aws-s3-deployment.AWS_ACCESS_KEY_ID        - AWS_ACCESS_KEY_ID: $aws-s3-deployment.AWS_ACCESS_KEY_ID
-
-        - AWS_SECRET_ACCESS_KEY: $aws-s3-deployment.AWS_SECRET_ACCESS_KEY        - AWS_SECRET_ACCESS_KEY: $aws-s3-deployment.AWS_SECRET_ACCESS_KEY
-
-        - AWS_DEFAULT_REGION: "us-east-1"        - AWS_DEFAULT_REGION: "us-east-1"
+grains:
+  quali_torque_assignment:
+    kind: terraform
+    spec:
+      source:
+        path: .
+      agent:
+        name: torqueagent01
+        namespace: default
+      inputs:
+        - bucket_name: "my-torque-test-bucket-12345"
+      outputs:
+        - bucket_name
+        - bucket_arn
+      env-vars:
+        - AWS_ACCESS_KEY_ID: $aws-s3-deployment.AWS_ACCESS_KEY_ID
+        - AWS_SECRET_ACCESS_KEY: $aws-s3-deployment.AWS_SECRET_ACCESS_KEY
+        - AWS_DEFAULT_REGION: "us-east-1"
