@@ -6,7 +6,7 @@ grains:
     kind: terraform
     spec:
       source:
-        path: .
+        store: git
       agent:
         name: tempagent01
         namespace: default
