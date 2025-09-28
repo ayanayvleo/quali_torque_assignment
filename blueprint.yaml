@@ -9,7 +9,7 @@ grains:
         store: git
         path: quali_torque_assignment
       agent:
-        name: tempagent01
+        name: torqueagent01
         namespace: default
       credentials: aws-s3-deployment
       inputs:
