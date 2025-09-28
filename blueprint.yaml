@@ -12,9 +12,6 @@ grains:
         namespace: default
       inputs:
         - bucket_name: "my-torque-test-bucket-12345"
-        - aws_access_key_id: "{{ torque.credentials.aws-s3-deployment.AWS_ACCESS_KEY_ID }}"
-        - aws_secret_access_key: "{{ torque.credentials.aws-s3-deployment.AWS_SECRET_ACCESS_KEY }}"
-        - aws_region: "us-east-1"
       outputs:
         - bucket_name
         - bucket_arn
