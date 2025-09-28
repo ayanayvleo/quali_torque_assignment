@@ -1,6 +1,9 @@
 spec_version: 2
 description: Simple S3 bucket deployment for Quali assignment
 
+credentials:
+  - aws-s3-deployment
+
 grains:
   s3-bucket:
     kind: terraform
@@ -11,7 +14,6 @@ grains:
       agent:
         name: torqueagent01
         namespace: default
-      credentials: aws-s3-deployment
       inputs:
         - bucket_name: "my-torque-test-bucket-12345"
       outputs:
