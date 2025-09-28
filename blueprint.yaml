@@ -6,9 +6,9 @@ grains:
     kind: terraform
     spec:
       source:
-        path: ./
+        path: .
       inputs:
-        - bucket_name: "my-torque-test-bucket-12345"
+        bucket_name: "my-torque-test-bucket-12345"
       outputs:
         - bucket_name
         - bucket_arn
