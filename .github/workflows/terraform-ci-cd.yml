@@ -1,0 +1,111 @@
+name: Terraform CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  terraform-validate:
+    name: Terraform Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.0
+        
+    - name: Terraform Format Check
+      run: terraform fmt -check -recursive
+      continue-on-error: true
+      
+    - name: Create minimal terraform backend config
+      run: |
+        cat > backend.tf << EOF
+        terraform {
+          backend "local" {
+            path = "terraform.tfstate"
+          }
+        }
+        EOF
+        
+    - name: Terraform Init
+      run: terraform init
+      
+    - name: Terraform Validate
+      run: terraform validate
+      
+    - name: Security Scan with Checkov
+      uses: bridgecrewio/checkov-action@master
+      with:
+        directory: .
+        framework: terraform
+        output_format: cli
+        quiet: true
+      continue-on-error: true
+
+  terraform-plan:
+    name: Terraform Plan (Demo)
+    runs-on: ubuntu-latest
+    needs: terraform-validate
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.0
+        
+    - name: Create minimal terraform backend config
+      run: |
+        cat > backend.tf << EOF
+        terraform {
+          backend "local" {
+            path = "terraform.tfstate"
+          }
+        }
+        EOF
+        
+    - name: Terraform Init
+      run: terraform init
+      
+    - name: Terraform Plan (Dry Run)
+      run: |
+        echo "Terraform plan would run with these variables:"
+        echo "bucket_name: test-bucket-$(date +%s)"
+        echo "aws_region: us-east-1"
+        echo "Note: Actual plan skipped - requires AWS credentials"
+        echo "This demonstrates CI/CD pipeline structure"
+
+  deployment-summary:
+    name: Create Deployment Summary
+    runs-on: ubuntu-latest
+    needs: [terraform-validate]
+    if: always()
+    
+    steps:
+    - name: Generate Summary
+      run: |
+        echo "## Terraform CI/CD Pipeline Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Validation Results" >> $GITHUB_STEP_SUMMARY
+        if [ "${{ needs.terraform-validate.result }}" == "success" ]; then
+          echo "- ✅ Terraform validation passed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Code format check completed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Security scan executed" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "- ❌ Terraform validation had issues" >> $GITHUB_STEP_SUMMARY
+        fi
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+        echo "- Manual deployment through Torque platform" >> $GITHUB_STEP_SUMMARY
+        echo "- Verify infrastructure in AWS console" >> $GITHUB_STEP_SUMMARY
+        echo "- Monitor environment status in Torque dashboard" >> $GITHUB_STEP_SUMMARY
