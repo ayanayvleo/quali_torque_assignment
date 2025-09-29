@@ -1,0 +1,17 @@
+spec_version: 2
+description: Simple S3 bucket deployment for Quali assignment
+
+grains:
+  quali_torque_assignment:
+    kind: terraform
+    spec:
+      source:
+        path: terraform
+      agent:
+        name: torqueagent01
+        namespace: default
+      inputs:
+        - bucket_name: "my-torque-test-bucket-12345"
+      outputs:
+        - bucket_name
+        - bucket_arn
